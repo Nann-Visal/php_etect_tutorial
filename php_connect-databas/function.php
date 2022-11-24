@@ -18,14 +18,104 @@
                 VALUES (null,'$name','$gender','$age','$course','$phone')";
             $res = $con->query($sql);
             if($res){
-                echo 'inserted';
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Success!",
+                                text: "Information has been insert",
+                                icon: "success",
+                        });
+                        })
+                    </script>
+                ';
             }else{
-                echo "erro";
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Error!",
+                                text: "Something went worng",
+                                icon: "error",
+                                button: "try again",
+                        });
+                        })
+                    </script>
+                ';
             }
           }else{
-              echo 'no';
+            echo '
+                <script>
+                    $(document).ready(function(){
+                        swal({
+                            title: "Error!",
+                            text: "All field must be not empty!",
+                            icon: "error",
+                            button: "try again",
+                    });
+                    })
+                </script>
+            ';
           }
         }
     }
     insert_data();
+
+    function update_data(){
+        global $con;
+        if(isset($_POST['btn_update'])){
+            $id  =  $_POST['stu_id'];
+            $name = $_POST['stu_name'];
+            $age = $_POST['stu_age'];
+            $gender = $_POST['stu_gender'];
+            $course = $_POST['stu_course'];
+            $phone =$_POST['stu_phone'];
+            if(!empty($name) && !empty($age) && !empty($gender) && !empty($course) && !empty($phone)){
+               $sql = "
+               UPDATE `tbl_user` SET `name`='$name',`gender`='$gender',`age`='$age',`course`='$course',`phone`='$phone' WHERE id = '$id'
+               ";
+               $res = $con->query($sql);
+               if($res){
+                echo '
+                <script>
+                    $(document).ready(function(){
+                        swal({
+                            title: "Success!",
+                            text: "Information has been update",
+                            icon: "success",
+                    });
+                    })
+                </script>
+            ';
+               }else{
+                echo '
+                <script>
+                    $(document).ready(function(){
+                        swal({
+                            title: "Error!",
+                            text: "Something went worng",
+                            icon: "error",
+                            button: "try again",
+                    });
+                    })
+                </script>
+            ';
+               }
+            }else{
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Error!",
+                                text: "All field must be not empty!",
+                                icon: "error",
+                                button: "try again",
+                        });
+                        })
+                    </script>
+                ';
+              }
+            }
+        }
+    update_data();
 ?>
