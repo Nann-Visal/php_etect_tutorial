@@ -47,6 +47,12 @@
                                 <button id="openUpdate" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#myModal">
                                     Update
                                 </button>
+                                <form class="d-inline" method="post">
+                                        <input type="hidden" name="id_delete" value="'.$row['id'].'">
+                                        <button type="submit" id="delete" name="btn_delete" class="btn btn-danger">
+                                            Delete
+                                        </button>
+                                </form>
                             </td>
                         </tr>
                     '; 
@@ -107,6 +113,14 @@
         $("#openAdd").click(function(){
             $("#update").hide();
             $("#insert").show();
+
+            $("#name").val("");
+            $("#age").val("");
+            $("#gender").find("option").eq(1).removeAttr("selected","selected");
+            $("#gender").find("option").eq(2).removeAttr("selected","selected");
+            $("#gender").find("option").eq(0).attr("selected","selected");
+            $("#course").val("");
+            $("#phone").val("");
         })
         $("body").on("click","#openUpdate",function(){
             $("#insert").hide();

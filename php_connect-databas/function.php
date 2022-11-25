@@ -118,4 +118,40 @@
             }
         }
     update_data();
+
+    function delete_data(){
+        global $con;
+        if(isset($_POST['btn_delete'])){
+            $id = $_POST['id_delete'];
+            $sql = "DELETE FROM `tbl_user` WHERE id ='$id'";
+            $res=$con->query($sql);
+            if($res){
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Success!",
+                                text: "Information has been deleted",
+                                icon: "success",
+                        });
+                        })
+                    </script>
+                ';
+            }else{
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Error!",
+                                text: "Something went worng",
+                                icon: "error",
+                                button: "try again",
+                        });
+                        })
+                    </script>
+                ';
+            }
+        }
+    }
+    delete_data();
 ?>
