@@ -74,4 +74,56 @@
     }
     //call function insert_data
     insert_data();
+
+    //function delete data from php to database
+    function delete_data(){
+        global $con;
+        if(isset($_POST['btn_modal_delete'])){
+            echo $id_delete = $_POST['id_delete'];
+            //delete data from my sql
+            $sql = "DELETE FROM tbl_staff WHERE id = '$id_delete'";
+            $res = $con->query($sql);
+            if($res){
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                                        swal({
+                                            title: "Success!",
+                                            text: "Data has been delete 1",
+                                            icon: "success",
+                                            button: "thank you!",
+                                        });
+                                    })
+                    </script>
+                ';
+            }else{
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                                        swal({
+                                            title: "Error!",
+                                            text: "Something went wrong!",
+                                            icon: "error",
+                                            button: "try again!",
+                                        });
+                                    })
+                    </script>
+                ';
+            }
+        }else{
+            echo '
+                <script>
+                    $(document).ready(function(){
+                                    swal({
+                                        title: "Error!",
+                                        text: "Something went wrong!",
+                                        icon: "error",
+                                        button: "try again!",
+                                    });
+                                })
+                </script>
+            ';
+        }
+    }
+    delete_data();
 ?>

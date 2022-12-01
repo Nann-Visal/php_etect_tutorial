@@ -35,26 +35,37 @@
                 <th>GENDER</th>
                 <th>SALARY</th>
                 <th>PROFILE</th>
+                <th>ACTION</th>
             </tr>
             <!-- call function from php function -->
             <?php
                     include('function.php');
+                    //query data from databse by myql script
+                    $sql = "SELECT * FROM tbl_staff ORDER BY id DESC ";
+                    $res = $con->query($sql);
+                    while($row=mysqli_fetch_assoc($res)){
+                        echo '
+                            <tr>
+                                <td>'.$row['id'].'</td>
+                                <td>'.$row['name'].'</td>
+                                <td>'.$row['age'].'</td>
+                                <td>'.$row['gender'].'</td>
+                                <td>'.$row['salary'].'</td>
+                                <td>
+                                    <img src="images/'.$row['profile'].'" width="90" height="100" style="object-fit:cover" alt="">
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning">Edit<i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button id="id_delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" >Delete<i class="fa-solid fa-trash-can-slash"></i></button>
+                                </td>
+                            </tr>
+                        ';
+                    }
              ?>
-            <tr>
-                <td>1</td>
-                <td>Nann Visal</td>
-                <td>19</td>
-                <td>Male</td>
-                <td>1000</td>
-                <td>
-                    <img src="https://th.bing.com/th/id/OIP.z8Vb0_W3Hxj3kkXEDjlTZwHaHa?w=189&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7" width="90" height="100" style="object-fit:cover" alt="">
-                </td>
-            </tr>
         </table>
-
     </div>
 
-    <!-- Modal -->
+    <!-- AddModal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -98,6 +109,35 @@
             </div>
         </div>
     </div>
+    <!-- DeleteModal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Are you really want to delete this staff?</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <form action="" method="post">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" name="id_delete" id="hidden_id_delete">
+                    <button type="submit" name="btn_modal_delete" class="btn btn-success" data-bs-dismiss="modal">Yes, Delete</button>
+                </form>
+            </div>
+
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    $(document).ready(function(){
+        $("body").on("click","#id_delete",function(){
+            var delete_id = $(this).parents("tr").find("td").eq(0).text();
+            $("#hidden_id_delete").val(delete_id);
+        })
+    })
+</script>
 </html>
