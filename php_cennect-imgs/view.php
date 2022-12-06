@@ -23,9 +23,9 @@
     <!-- @body web page -->
     <div class="container-fluid bg-dark float-end">
         <h1 class="text-light p-5 ">PHP CRUD IMAGES</h1>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary float-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <i class="fa-solid fa-user-plus"></i>
+         <!-- Button trigger modal -->
+        <button id="openAdd" type="button" class="btn btn-primary float-end " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add Staff . . . <i class="fa-regular fa-grid-2-plus"></i>
         </button>
         <table class="table table-dark table-hover align-middle" style="table-layout:fixed">
             <tr>
@@ -37,35 +37,39 @@
                 <th>PROFILE</th>
                 <th>ACTION</th>
             </tr>
-            <!-- call function from php function -->
             <?php
-                    include('function.php');
-                    //query data from databse by myql script
-                    $sql = "SELECT * FROM tbl_staff ORDER BY id DESC ";
-                    $res = $con->query($sql);
-                    while($row=mysqli_fetch_assoc($res)){
-                        echo '
-                            <tr>
-                                <td>'.$row['id'].'</td>
-                                <td>'.$row['name'].'</td>
-                                <td>'.$row['age'].'</td>
-                                <td>'.$row['gender'].'</td>
-                                <td>'.$row['salary'].'</td>
-                                <td>
-                                    <img src="images/'.$row['profile'].'" width="90" height="100" style="object-fit:cover" alt="">
-                                </td>
-                                <td>
-                                    <button class="btn btn-warning">Edit<i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button id="id_delete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" >Delete<i class="fa-solid fa-trash-can-slash"></i></button>
-                                </td>
-                            </tr>
-                        ';
-                    }
-             ?>
+                include('function.php');
+                $sql = "SELECT * FROM tbl_staff WHERE isdelete = 0 ORDER BY id DESC";
+                $res = $con->query($sql);
+                while($row = mysqli_fetch_assoc($res)){
+                    echo'
+                        <tr>
+                            <td>'.$row['id'].'</td>
+                            <td>'.$row['name'].'</td>
+                            <td>'.$row['age'].'</td>
+                            <td>'.$row['gender'].'</td>
+                            <td>'.$row['salary'].'</td>
+                            <td>
+                                <img src="images/'.$row['profile'].'" alt="'.$row['profile'].'" width="100" style="object-fit:cover" height="100" alt="">
+                            </td>
+                            <td>
+                                <button id="openEdit" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Edit
+                                    <i class="fa-solid fa-rectangles-mixed"></i>
+                                </button>
+                                <!-- Button to Open the Modal -->
+                                <button id="openDelete" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">
+                                    Delete
+                                    <i class="fa-regular fa-nfc-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    ';
+                }
+            ?>
         </table>
     </div>
-
-    <!-- AddModal -->
+    <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -76,57 +80,61 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="" class="mb-1">Name</label>
-                            <input type="text" name="username" id="" class="form-control">
+                            <label for="">Name</label>
+                            <input id="id_username" type="text"  class="form-control" name="user_name" >
                         </div>
                         <div class="form-group">
-                            <label for="" class="mb-1">Age</label>
-                            <input type="text" name="age" id="" class="form-control">
+                            <label for="">Age</label>
+                            <input id="id_userage" type="text" class="form-control" name="user_age" >
                         </div>
                         <div class="form-group">
-                            <label for="" class="mb-1">Gender</label>
-                        <select name="gender" id="" class="form-select">
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="unknow">Unknow</option>
-                        </select>
+                            <label for="">Gender</label>
+                            <select id="id_usergender" class="form-select" name="user_gender" >
+                                <option value="male">Malse</option>
+                                <option value="femalse">Femalse</option>
+                                <option value="unknow">Unknow</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="" class="mb-1">Salary</label>
-                            <input type="text" name="salary" id="" class="form-control">
+                            <label for="">Salary</label>
+                            <input id="id_usersalary" type="text" class="form-control" name="user_salary" >
                         </div>
                         <div class="form-group">
-                            <label for="" class="mb-1">Profile</label>
-                            <input type="file" name="profile" id="" class="form-control">
-                        </div>
-
+                            <label for="">Profile</label>
+                            <input id="id_userprofile" type="file" class="form-control" name="user_profile" >
+                        </div>  
+                        <!-- oldprofile and id -->
+                        <input type="hidden" id="old_profile" name="old_pro">
+                        <input type="hidden" id="old_id" name="old_id">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="btn_save">Save</button>
-                        </div>
+                            <button type="submit" class="btn btn-success" id="id_modal_save" name="btn_modal_save">Save</button>
+                            <button type="submit" class="btn btn-primary" id="id_modal_edit" name="btn_modal_edit">Save Edit</button>
+                        </div>     
                     </form>
                 </div>
+                
             </div>
         </div>
     </div>
-    <!-- DeleteModal -->
+    <!-- The delete Modal -->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Are you really want to delete this staff?</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <form action="" method="post">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you want to delete this staff?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                    <input type="hidden" name="id_delete" id="hidden_id_delete">
-                    <button type="submit" name="btn_modal_delete" class="btn btn-success" data-bs-dismiss="modal">Yes, Delete</button>
-                </form>
-            </div>
+                    <form action="" method="post">
+                        <input type="hidden" name="remove_id" id="rm_id">
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal" name="btn_modal_delete">Yes,Delete</button>
+                    </form>
+                </div>
 
             </div>
         </div>
@@ -134,10 +142,45 @@
 </body>
 <script>
     $(document).ready(function(){
-        $("body").on("click","#id_delete",function(){
-            var delete_id = $(this).parents("tr").find("td").eq(0).text();
-            $("#hidden_id_delete").val(delete_id);
-        })
+        $("body").on("click","#openDelete",function(){
+            var remove_id = $(this).parents("tr").find("td").eq(0).text();
+            $("#rm_id").val(remove_id);
+        });
+        $("#openAdd").click(function(){
+            $("#id_modal_save").show();
+            $("#id_modal_edit").hide();
+        });
+        $("body").on("click","#openEdit",function(){
+            $("#id_modal_save").hide();
+            $("#id_modal_edit").show();
+      
+            var id       = $(this).parents("tr").find("td").eq(0).text();
+            var name     = $(this).parents("tr").find("td").eq(1).text();
+            var age      = $(this).parents("tr").find("td").eq(2).text();
+            var gender   = $(this).parents("tr").find("td").eq(3).text();
+            var salary   = $(this).parents("tr").find("td").eq(4).text();
+            var profile  = $(this).parents("tr").find("td:eq(5) img").attr("alt");
+
+            $("#old_id").val(id);
+            $("#id_username").val(name);
+            $("#id_userage").val(age);
+            if(gender=='male'){
+                $("#id_usergender").find("option").eq(2).removeAttr("selected","selected");
+                $("#id_usergender").find("option").eq(1).removeAttr("selected","selected");
+                $("#id_usergender").find("option").eq(0).attr("selected","selected");
+            }else if(gender=='unknow'){
+                $("#id_usergender").find("option").eq(0).removeAttr("selected","selected");
+                $("#id_usergender").find("option").eq(1).removeAttr("selected","selected");
+                $("#id_usergender").find("option").eq(2).attr("selected","selected");
+            }else{
+                $("#id_usergender").find("option").eq(2).removeAttr("selected","selected");
+                $("#id_usergender").find("option").eq(0).removeAttr("selected","selected");
+                $("#id_usergender").find("option").eq(1).attr("selected","selected");
+            }
+            $("#id_usersalary").val(salary);
+            $("#old_profile").val(profile);
+        });
+
     })
 </script>
 </html>
