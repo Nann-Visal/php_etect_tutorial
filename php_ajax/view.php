@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJAX</title>
-    <!-- @boostrap  css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+     <!-- @boostrap  css -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- @boostrap js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
@@ -17,6 +17,9 @@
     <!-- @sweetralert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+
+    <title>AJAX</title>
+
 </head>
 <body>
 
@@ -25,7 +28,7 @@
         <h1 class="p-5">Shoes List </h1>
 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button id="btn_add" type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Add . . . <i class="fa-solid fa-plus"></i>
         </button>
 
@@ -39,6 +42,7 @@
                 <th>From</th>
                 <th>For</th>
                 <th>Product</th>
+                <th>Action</th>
             </tr>
 
              <!-- call php -->
@@ -49,7 +53,7 @@
                 global $con;
 
                 //query data from database
-                $sql = "SELECT * FROM tbl_shoes";
+                $sql = "SELECT * FROM tbl_shoes ORDER BY id DESC";
                 $res = $con->query($sql);
                 while($row = mysqli_fetch_assoc($res)){
                     echo '
@@ -61,16 +65,25 @@
                         <td>'.$row['from'].'</td>
                         <td>'.$row['for'].'</td>
                         <td>
-                            <img src="images/'.$row['thumbnail'].'" alt="" width="150" height="100">
+                            <img src="images/'.$row['thumbnail'].'" alt="'.$row['thumbnail'].'" width="150" height="100">
                         </td>
+                        <td>
+                            <button id="btn_edit" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Edit . . .
+                            </button>
+                            <!-- Button modal delete -->
+                            <button id="btn_delete" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Delete . . .
+                            </button>
+                        
+                        </td> 
                     </tr>
                     ';
                 }
             ?>
         </table>
-
     </div>
-                    
+                  
     <!-- Block Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -105,13 +118,30 @@
                         <label for="" class="d-block">Thumbnail : </label> 
                         <img   id="upload_img" src="images/OIP_k.jpg" width="100" alt=""> <!-- d-none == hidden -->
                         <input type="file" name="product_thumbnail" id="product_thumbnail" class="form-control d-none">
-                        <input type="text" name="image_name" id="image_name" class="d-none">
+                        <input type="text" name="image_name" id="image_name" class="d-none" >
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" id="btn_modal_close" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="btn_modal_save" name="btn_modal_save">Save</button>
+                <button type="button" class="btn btn-primary" id="btn_modal_edit" name="btn_modal_edit">Edit</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Are you want to delete this product?</h5>
+                <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button id="close_btn_modal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="btn_modal_delete" type="button" class="btn btn-success">Yes . . .</button>
             </div>
             </div>
         </div>
@@ -142,13 +172,19 @@
                 cache       :false,
                 contentType :false,
                 processData :false,
-                success     :function(respone){
-                    $("#upload_img").attr("src","images/"+respone); //this line describe that ajax get respone from php when php finish task
-                    $("#image_name").val(respone);
+                success     :function(response){
+                    $("#upload_img").attr("src","images/"+response); //this line describe that ajax get respone from php when php finish task
+                    $("#image_name").val(response);
                 }
             });
         });
-        
+
+        //if user click on btn_add
+        $('body').on('click','#btn_add',function(){
+            $("#btn_modal_edit").hide();
+            $("#btn_modal_save").show();
+        })
+
         //if user click save in modal, we use ajax to implement this task
         $("#btn_modal_save").click(function(){
 
@@ -173,12 +209,106 @@
                             product_img  : img,
                         },
                cache    :   false,
-               success  :function(respone){         //this line describe that ajax get respone from php when php finish task 
-                            alert(respone);
+               success  :function(response){         //this line describe that ajax get respone from php when php finish task 
+                            if(response == "success"){
+                                swal({
+                                    title: "Success!",
+                                    text: "Information has been insert",
+                                    icon: "success",
+                                });
+                                $("#exampleModal").click();
+                            }
                         }
             });
         });
 
+        //if user click on delete
+        $("body").on("click","#btn_delete",function(){
+            var remove_id = $(this).parents("tr").find("td").eq(0).text();
+
+            $("#btn_modal_delete").click(function(){
+                $.ajax({
+                    url     : 'delete.php',
+                    method  : "POST",
+                    cache   :false,
+                    data    :{
+                        id : remove_id
+                    },
+                    success :function(response){
+                        if(response){
+                            if(response == 'success'){
+                                swal({
+                                    title: "Success!",
+                                    text: "Information has been insert",
+                                    icon: "success",
+                                });
+                                $("#close_btn_modal").click();
+                            }
+                        }
+                    }
+                 });
+            });
+        });
+
+        //if user click on edit
+        $('body').on('click','#btn_edit',function(){
+            $("#btn_modal_save").hide();
+            $("#btn_modal_edit").show();
+
+            var id    = $(this).parents('tr').find('td').eq(0).text();
+            var name  = $(this).parents('tr').find('td').eq(1).text();
+            var size  = $(this).parents('tr').find('td').eq(2).text();
+            var price = $(this).parents('tr').find('td').eq(3).text();
+            var from  = $(this).parents('tr').find('td').eq(4).text();
+            var _for  = $(this).parents('tr').find('td').eq(5).text();
+            var thumdnail  = $(this).parents('tr').find("td:eq(6) img").attr("alt");
+
+            $("#product_id").val(id)
+            $("#product_name").val(name);
+            $("#product_size").val(size);
+            $("#product_price").val(price);
+            $("#product_from").val(from);
+            $("#product_for").val(_for);
+            $("#upload_img").attr('src','images/'+thumdnail);
+            $("#image_name").val(thumdnail);
+            //if user click in edit
+            $("#btn_modal_edit").click(function(){
+                id        = id;
+                name      = $("#product_name").val();
+                size      = $("#product_size").val();
+                price     = $("#product_price").val();
+                from      = $("#product_from").val();
+                _for      = $("#product_for").val();
+                thumdnail =  $("#image_name").val();
+                
+                $.ajax({
+                    url     :   "update.php",           // assign task to php implement
+                    method  :   "POST",
+                    data    :   {    
+                                edit_id   :id,          //data assign as a key value
+                                edit_name : name,
+                                edit_size : size,
+                                edit_price: price,
+                                edit_from : from,
+                                edit_for  : _for,
+                                product_img  : thumdnail,
+                            },
+                    cache    :   false,
+                    success  : function(response){
+                        if(response){
+                            if(response == 'success'){
+                                swal({
+                                    title: "Success!",
+                                    text: "Information has been edit",
+                                    icon: "success",
+                                });
+                                $("#btn_modal_close").click();
+                            }
+                        }
+                    }
+                })
+            })
+        })
     });  
 </script>
 </html>

@@ -23,13 +23,7 @@
         //resspone query sql statement
         $res = $con->query($sql);
         if($res){
-            echo 'success';
+            echo'success';
         }
-        else{
-            echo 'error';
-        }
-    }
-    else{
-        echo "erro";
     }
 ?>
