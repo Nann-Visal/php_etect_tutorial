@@ -48,7 +48,7 @@
                                     <ul class="child">
                                         <li>
                                             <a href="view-post.php">View Post</a>
-                                            <a href="logo_add_post.php">Add New</a>
+                                            <a href="add-post.php">Add New</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -61,7 +61,7 @@
                                     <ul class="child">
                                         <li>
                                             <a href="logo_view_post.php">View Post</a>
-                                            <a href="add-post.php">Add New</a>
+                                            <a href="logo_add_post.php">Add New</a>
                                         </li>
                                     </ul>
                                 </li>

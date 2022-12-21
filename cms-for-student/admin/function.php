@@ -120,8 +120,104 @@
 
     //add post function
     function logo_add_post(){
-        
+        global $con;
+        if(isset($_POST['btn_add_logo'])){
+
+            $show_on    =   $_POST["show_on_addpost"];
+            $thumbnail  =   $_FILES["thumbnail_addpost"]["name"];
+           
+            if(!empty($show_on) && !empty($thumbnail)){
+                $thumbnail = date('YmdHis').'----'.$thumbnail;
+                $path = 'assets/icon/'.$thumbnail;
+                move_uploaded_file($_FILES["thumbnail_addpost"]["tmp_name"],$path);
+                $sql = "
+                    INSERT INTO `tbl_logo`(`thumbnail`, `status`)
+                    VALUES ('$thumbnail','$show_on')
+                ";
+                $res = $con->query($sql);
+                if($res){
+                    echo '
+                        <script>
+                            $(document).ready(function(){
+                                swal({
+                                    title: "Has been adding . . .",
+                                    icon: "success",
+                                    button: "Okay",
+                                });
+                            })
+                        </script>
+                    ';
+                }else{
+                    echo '
+                        <script>
+                            $(document).ready(function(){
+                                swal({
+                                    title: "Has been dose not adding . . .",
+                                    text: "Something went wrong . . . !",
+                                    icon: "error",
+                                    button: "Try again!",
+                                });
+                            })
+                        </script>
+                    ';
+                }
+            }
+        }
     }
     //call function
     logo_add_post();
+
+    //logo view
+    function logo_view_post(){
+
+        global $con;
+        $sql = "SELECT * FROM tbl_logo ORDER BY id DESC LIMIT 5";
+        $res = $con->query($sql);
+        while( $row=mysqli_fetch_assoc($res)){
+            $id         = $row['id'];
+            $thumbnail  = $row['thumbnail'];
+            $show_on    = $row['status'];
+            echo '
+                <tr>
+                    <td>'.$id.'</td>
+                    <td>
+                        <img width="120" height="120" src="assets/icon/'.$thumbnail.'"alt="">
+                    </td>
+                    <td>'.$show_on.'</td>
+                    <td>
+                        <a href="logo_update_post.php?id='.$id.'" class="btn btn-warning">Update</a>
+                        <a href="" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            ';
+        }
+    }
+
+    //update logo
+    function logo_update_post(){
+        global $con;
+        if(isset($_POST['btn_update_logo'])){
+            $show_on    = $_POST['show_on_updatepost'];
+            $thumbnail  = $_FILES['thumbnail_updatepost']['name'];
+            $old_thumbnail = $_POST['old_thumbnail'];
+            $update_post_id = $_GET['id'];
+            if(!empty($thumbnail)){
+                $thumbnail = date('YmdHis').'----'.$thumbnail;
+                $path = 'assets/icon/'.$thumbnail;
+                move_uploaded_file($_FILES["thumbnail_addpost"]["tmp_name"],$path);
+            }
+            else{
+                $thumbnail = $old_thumbnail;
+            }
+
+            $sql = "
+                UPDATE `tbl_logo` SET `thumbnail`='$thumbnail',`status`='$show_on'
+                WHERE id = '$update_post_id'
+            ";
+            $res = $con->query($sql);
+            
+        }
+    }
+    //call function
+    logo_update_post();
 ?>

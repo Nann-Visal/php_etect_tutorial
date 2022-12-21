@@ -2,7 +2,7 @@
         <div class="container">
             <div class="logo">
                 <a href="">
-                    <img src="https://dummyimage.com/120" alt="">
+                    <img src="../admin/assets/icon/<?php get_logo_webside('footer') ?>" alt="">
                 </a>
             </div>
             <div class="about">
