@@ -14,17 +14,42 @@
                                         <button type="submit">
                                         <img src="search.png" alt=""></button>
                                     </div> -->
-                                    <table class="table align-middle" border="1px" style="table-layout:fixed">
+                                    <table class="table" border="1px">
                                         <tr>
-                                            <th>Id</th>
+                                            <th>Title</th>
+                                            <th>Post Type</th>
+                                            <th>Categories</th>
                                             <th>Thumbnail</th>
-                                            <th>Show on</th>
-                                            <th>Action</th>
+                                            <th>Publish Date</th>
+                                            <th>Actions</th>
                                         </tr>
-                                        <?php
-                                            logo_view_post()
-                                        ?>
-                                        <!-- <tr>
+                                        <tr>
+                                            <td>Why do we use it?</td>
+                                            <td>Sport</td>
+                                            <td>National</td>
+                                            <td><img src="https://via.placeholder.com/80"/></td>
+                                            <td>27/June/2022</td>
+                                            <td width="150px">
+                                                <a href=""class="btn btn-primary">Update</a>
+                                                <button type="button" remove-id="1" class="btn btn-danger btn-remove" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                    Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Why do we use it?</td>
+                                            <td>Sport</td>
+                                            <td>National</td>
+                                            <td><img src="https://via.placeholder.com/80"/></td>
+                                            <td>27/June/2022</td>
+                                            <td width="150px">
+                                                <a href=""class="btn btn-primary">Update</a>
+                                                <button type="button" remove-id="2" class="btn btn-danger btn-remove" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                    Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td>Why do we use it?</td>
                                             <td>Sport</td>
                                             <td>National</td>
@@ -36,7 +61,7 @@
                                                     Remove
                                                 </button>
                                             </td>
-                                        </tr> -->
+                                        </tr>
                                     </table>
                                     <ul class="pagination">
                                         <li>
@@ -57,8 +82,8 @@
                                                 <div class="modal-footer">
                                                     <form action="" method="post">
                                                         <input type="hidden" class="value_remove" name="remove_id">
-                                                        <button name="acceptDelete" type="submit" class="btn btn-danger">Yes</button>
-                                                        <button name="acceptCancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>  
+                                                        <button type="submit" class="btn btn-danger">Yes</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>  
                                                     </form>
                                                 </div>
                                             </div>

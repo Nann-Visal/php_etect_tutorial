@@ -34,9 +34,15 @@
                             <img src="assets/icon/admin-logo.png" alt="">
                             <h5>Jong Deng News</h5>
                         </div>
+                        <?php 
+                            $user_id = $_SESSION['user'];
+                            $sql = "SELECT * FROM tbl_user WHERE id = '$user_id'";
+                            $res = $con->query($sql);
+                            $row = mysqli_fetch_assoc($res);
+                        ?>
                         <div class="wrap-center">
-                            <img src="https://via.placeholder.com/40" alt="">
-                            <h6>Welcome Admin Sok</h6>
+                            <img src="assets/icon/<?php echo $row['profile']?>" alt="" width="40" height="40">
+                            <h6>Welcome Admin <?php echo $row['username']?></h6>
                         </div>
                         <div class="wrap-bottom">
                             <ul>
@@ -62,6 +68,19 @@
                                         <li>
                                             <a href="logo_view_post.php">View Post</a>
                                             <a href="logo_add_post.php">Add New</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!-- sprot new  -->
+                                <li class="parent">
+                                    <a class="parent" href="javascript:void(0)">
+                                        <span>SPORT NEWS</span>
+                                        <img src="assets/icon/arrow.png" alt="">
+                                    </a>
+                                    <ul class="child">
+                                        <li>
+                                            <a href="sport_news_view_post.php">View Post</a>
+                                            <a href="sport_news_add_post.php">Add New</a>
                                         </li>
                                     </ul>
                                 </li>

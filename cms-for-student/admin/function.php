@@ -63,20 +63,7 @@
                 ';
             }
         }
-        else{
-            echo '
-                <script>
-                    $(document).ready(function(){
-                        swal({
-                            title: "Can not register",
-                            text: "Something went twrong!",
-                            icon: "error",
-                            button: "Try again!",
-                        });
-                    })
-                </script>
-            ';
-        }
+        
     }
     //call function
     register();
@@ -186,7 +173,9 @@
                     <td>'.$show_on.'</td>
                     <td>
                         <a href="logo_update_post.php?id='.$id.'" class="btn btn-warning">Update</a>
-                        <a href="" class="btn btn-danger">Delete</a>
+                        <button type="button" name="remove-id" remove-id="'.$id.'" class="btn btn-danger btn-remove" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Remove
+                        </button>
                     </td>
                 </tr>
             ';
@@ -220,4 +209,99 @@
     }
     //call function
     logo_update_post();
+
+    //delete post
+    function logo_delete_post(){
+        global $con;
+        if(isset($_POST['acceptDelete'])){
+            $remove_id = $_POST['remove_id'];
+            $sql = "DELETE FROM tbl_logo WHERE id = '$remove_id'";
+            $res = $con->query($sql);
+            if($res){
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Has been delete . . .",
+                                text: "Sucessfull to delete . . .",
+                                icon: "success",
+                                button: "Next . . .",
+                            });
+                        })
+                    </script>
+                ';
+            }else{
+                echo '
+                    <script>
+                        $(document).ready(function(){
+                            swal({
+                                title: "Has not been delete . . .",
+                                text: "Somethong went wrong . . .",
+                                icon: "error",
+                                button: "try again . . .",
+                            });
+                        })
+                    </script>
+                ';
+            }
+        }
+    }
+    //call function
+    logo_delete_post();
+
+    //upload img
+    function uploadimg($type){
+        $file_name =date('YmdHis').'--'. $_FILES[$type]['name'];
+        $path = 'assets/image'.$file_name;
+        move_uploaded_file( $_FILES[$type]['tmp_name'],$path);
+        return $file_name;
+    }
+
+    //add sport new post
+    function add_sport_news_post(){
+        if(isset($_POST['acceptPublish'])){
+
+            global $con;
+            $news_title = $_POST['news_title'];
+            $news_type = $_POST['news_type'];
+            $news_category = $_POST['news_catogery'];
+            $news_thumbanil = uploadimg('news_thumbnail');
+            $news_banner = uploadimg('news_banner');
+            $news_description = $_POST['news_description'];
+            $author_id = $_SESSION['user'];
+
+            $sql = "
+                INSERT INTO `tbl_news`( `author_id`, `title`,`description`, `banner`, `thumbnail`, `news_type`, `category`)
+                VALUES ('$author_id','$news_title','$news_description',' $news_banner','$news_thumbanil','$news_type','$news_category')
+            ";
+            $res = $con->query($sql);
+            if($res){
+                echo '
+                        <script>
+                            $(document).ready(function(){
+                                swal({
+                                    title: "Has been insert . . .",
+                                    icon: "success",
+                                    button: "Okay",
+                                });
+                            })
+                        </script>
+                    ';
+            }else{
+                echo '
+                        <script>
+                            $(document).ready(function(){
+                                swal({
+                                    title: "Has not been  insert. . .",
+                                    icon: "error",
+                                    button: "try again . . .",
+                                });
+                            })
+                        </script>
+                    ';
+            }
+        }
+    }
+    //call function
+    add_sport_news_post();
 ?>

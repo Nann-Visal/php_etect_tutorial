@@ -1,7 +1,7 @@
 <?php 
+    error_reporting(0);
     include('sidebar.php');
-    if(!empty($_SESSION['user'])){
-       
+    if(!empty($_SESSION['user'])){ 
 ?>
         <div class="col-10">
             <div class="content-right">
