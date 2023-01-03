@@ -263,7 +263,7 @@
             var _for  = $(this).parents('tr').find('td').eq(5).text();
             var thumdnail  = $(this).parents('tr').find("td:eq(6) img").attr("alt");
 
-            $("#product_id").val(id)
+            
             $("#product_name").val(name);
             $("#product_size").val(size);
             $("#product_price").val(price);
