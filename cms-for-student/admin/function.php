@@ -18,9 +18,8 @@
             $password  =   $_POST['userpassword'];
             $email     =   $_POST['useremail'];
             $profile   =   $_FILES['userprofile']['name'];
-        }
 
-        //check user input
+            //check user input
         if(!empty($name) && !empty($password) && !empty($email) && !empty($profile)){
 
             $password = md5($password);
@@ -63,6 +62,8 @@
                 ';
             }
         }
+        }
+
         
     }
     //call function

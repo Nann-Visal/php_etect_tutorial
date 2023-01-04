@@ -1,0 +1,3 @@
+1 , isset is the function that used to specifies whether a variable is declared or set in the php script
+ and doesn’t have a null value.
+2 , unset is the function that used to clears or unset the defined variable in the php script.
